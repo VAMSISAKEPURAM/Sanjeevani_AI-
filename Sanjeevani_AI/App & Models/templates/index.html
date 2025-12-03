@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sanjeevani AI Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+  <style>
+    /* 🌿 Enhanced Visual Design - Keeping All Functionality */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: #fff;
+      overflow-x: hidden;
+      background: linear-gradient(135deg, #0a1f0a 0%, #000 50%, #1a0a2e 100%);
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* 🎥 Enhanced Video Background with Overlay */
+    #bg-video {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      min-width: 100%;
+      min-height: 100%;
+      object-fit: cover;
+      z-index: -2;
+      filter: brightness(0.4) contrast(1.2);
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 50%, rgba(46, 125, 50, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 20%, rgba(156, 39, 176, 0.08) 0%, transparent 50%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* 🌿 Hero Section - Enhanced */
+    .hero-section {
+      text-align: center;
+      padding: 80px 20px 60px;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #aefc5f, transparent);
+    }
+
+    .hero-section img {
+      width: 200px;
+      height: 150px;
+      border-radius: 50%;
+      border: 3px solid #c236c7;
+      margin-bottom: 25px;
+      box-shadow: 0 0 25px rgba(194, 54, 199, 0.5),
+                  0 0 50px rgba(174, 252, 95, 0.3),
+                  inset 0 0 20px rgba(255, 255, 255, 0.1);
+      animation: gentleGlow 3s ease-in-out infinite alternate;
+      transition: transform 0.5s ease;
+    }
+
+    .hero-section img:hover {
+      transform: scale(1.05);
+    }
+
+    @keyframes gentleGlow {
+      from { box-shadow: 0 0 25px rgba(194, 54, 199, 0.5), 0 0 50px rgba(174, 252, 95, 0.3); }
+      to { box-shadow: 0 0 35px rgba(194, 54, 199, 0.7), 0 0 60px rgba(174, 252, 95, 0.5); }
+    }
+
+    .hero-section h1 {
+      font-size: 52px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #e5ffcf 0%, #aefc5f 50%, #c236c7 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+      letter-spacing: 1px;
+      margin-bottom: 15px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .hero-section h1::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200px;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #aefc5f, transparent);
+    }
+
+    .hero-section p {
+      font-size: 20px;
+      font-weight: 600;
+      color: #f4fff2;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+      max-width: 800px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* 🌾 Feature Section - Enhanced */
+    .feature-section {
+      background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.3));
+      text-align: center;
+      padding: 70px 20px;
+      position: relative;
+    }
+
+    .feature-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 2px;
+      background: linear-gradient(90deg, #aefc5f, #c236c7);
+    }
+
+    .feature-section h2 {
+      font-size: 2.5rem;
+      background: linear-gradient(135deg, #eaffd3, #ffd6ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
+      font-weight: 800;
+      margin-bottom: 10px;
+      letter-spacing: 0.5px;
+    }
+
+    .feature-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .feature-box {
+      flex: 1 1 300px;
+      background: linear-gradient(145deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8));
+      border: 1px solid rgba(174, 252, 95, 0.3);
+      color: #fff;
+      padding: 30px 25px;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .feature-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(174, 252, 95, 0.1), transparent);
+      transition: left 0.7s;
+    }
+
+    .feature-box:hover::before {
+      left: 100%;
+    }
+
+    .feature-box:hover {
+      transform: translateY(-10px) scale(1.02);
+      background: linear-gradient(145deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9));
+      border-color: rgba(174, 252, 95, 0.6);
+      box-shadow: 0 15px 40px rgba(174, 252, 95, 0.2),
+                  0 0 30px rgba(194, 54, 199, 0.1);
+    }
+
+    .feature-box h3 {
+      font-size: 1.5rem;
+      margin: 15px 0 10px;
+      color: #aefc5f;
+      font-weight: 700;
+    }
+
+    .feature-box p {
+      color: #d4ffad;
+      line-height: 1.6;
+      font-size: 1rem;
+    }
+
+    /* 🌿 Upload Section - Enhanced */
+    .content-section {
+      text-align: center;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), transparent);
+      padding: 80px 20px;
+      position: relative;
+    }
+
+    .content-section h2 {
+      font-family: 'Georgia', serif;
+      background: linear-gradient(135deg, #d4ffad, #ffecb3);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7);
+      font-size: 2.2rem;
+      margin-bottom: 15px;
+    }
+
+    .upload-container {
+      border: 2px dashed rgba(174, 252, 95, 0.5);
+      border-radius: 20px;
+      padding: 40px 30px;
+      background: linear-gradient(145deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7));
+      margin-top: 40px;
+      max-width: 650px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      transition: all 0.4s ease;
+    }
+
+    .upload-container:hover {
+      border-color: rgba(174, 252, 95, 0.8);
+      box-shadow: 0 15px 50px rgba(174, 252, 95, 0.3),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .upload-box {
+      cursor: pointer;
+      padding: 50px 30px;
+      border-radius: 15px;
+      transition: all 0.3s;
+      color: #cfff9d;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .upload-box:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    #imageUpload { display: none; }
+
+    button {
+      background: linear-gradient(135deg, #aefc5f, #8dfc3a);
+      color: #02362b;
+      border: none;
+      padding: 16px 40px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      margin-top: 30px;
+      font-weight: 800;
+      box-shadow: 0 8px 25px rgba(173, 255, 47, 0.5),
+                  0 0 20px rgba(173, 255, 47, 0.3);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      letter-spacing: 0.5px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.7s;
+    }
+
+    button:hover::before {
+      left: 100%;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #9ff55a, #7cfc00);
+      box-shadow: 0 12px 35px rgba(173, 255, 47, 0.7),
+                  0 0 30px rgba(173, 255, 47, 0.5);
+      transform: translateY(-3px);
+    }
+
+    button:active {
+      transform: translateY(-1px);
+    }
+
+    /* 🚜 How It Works - Enhanced */
+    .how-it-works-section {
+      background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.4));
+      text-align: center;
+      padding: 80px 20px;
+      position: relative;
+    }
+
+    .steps-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .step-card {
+      flex: 1 1 300px;
+      padding: 35px 25px;
+      border-radius: 20px;
+      background: linear-gradient(145deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8));
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      color: #fff;
+      transition: all 0.4s ease;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .step-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(174, 252, 95, 0.4);
+      box-shadow: 0 15px 40px rgba(174, 252, 95, 0.2),
+                  0 0 30px rgba(194, 54, 199, 0.1);
+    }
+
+    .step-number {
+      font-size: 2.5rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #affc6b, #c236c7);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      background-color: rgba(255, 255, 255, 0.15);
+      width: 80px;
+      height: 80px;
+      line-height: 80px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      border: 2px solid rgba(174, 252, 95, 0.3);
+    }
+
+    .step-card h4 {
+      font-size: 1.5rem;
+      color: #aefc5f;
+      margin-bottom: 15px;
+      font-weight: 700;
+    }
+
+    .step-card p {
+      color: #d4ffad;
+      line-height: 1.6;
+    }
+
+    /* 🌱 Footer - Enhanced */
+    footer {
+      text-align: center;
+      padding: 40px 25px;
+      font-size: 1rem;
+      color: #fff;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+      box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.6);
+      position: relative;
+      overflow: hidden;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #aefc5f, #c236c7, transparent);
+    }
+
+    footer p {
+      margin: 10px 0;
+      color: #d4ffad;
+    }
+
+    /* Enhanced Good Days List */
+    .good-days-list {
+      max-width: 800px;
+      margin: 30px auto;
+      text-align: left;
+    }
+
+    .good-day {
+      background: linear-gradient(135deg, rgba(109, 207, 123, 0.2), rgba(0, 0, 0, 0.6));
+      padding: 18px;
+      margin-bottom: 15px;
+      border-radius: 12px;
+      border-left: 5px solid #6dcf7b;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(109, 207, 123, 0.3);
+    }
+
+    .good-day:hover {
+      transform: translateX(5px);
+      border-left-color: #aefc5f;
+      box-shadow: 0 8px 20px rgba(109, 207, 123, 0.3);
+    }
+
+    .good-day .meta {
+      font-size: 14px;
+      color: #cde9c7;
+      margin-top: 8px;
+      font-family: monospace;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 8px 12px;
+      border-radius: 6px;
+    }
+
+    /* 🌿 Pesticide Table - Enhanced */
+    .pesticide-table-container {
+      max-width: 95%;
+      margin: 40px auto;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
+      padding: 40px;
+      border-radius: 20px;
+      backdrop-filter: blur(12px);
+      border-left: 6px solid #ffa726;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pesticide-table-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #ffa726, transparent);
+    }
+
+    .pesticide-table-container h2 {
+      background: linear-gradient(135deg, #ff9800, #ff5722);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 25px;
+      text-align: center;
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .pesticide-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-top: 20px;
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .pesticide-table th {
+      background: linear-gradient(135deg, #ffa726, #ff9800);
+      color: #000;
+      padding: 18px 20px;
+      text-align: left;
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .pesticide-table td {
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+      transition: all 0.3s ease;
+    }
+
+    .pesticide-table tr {
+      transition: all 0.3s ease;
+    }
+
+    .pesticide-table tr:hover {
+      background: rgba(255, 167, 38, 0.15);
+    }
+
+    .pesticide-table tr:hover td {
+      transform: translateX(5px);
+    }
+
+    .pesticide-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .no-recommendations {
+      text-align: center;
+      padding: 40px;
+      color: #ffd6d6;
+      font-size: 18px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 15px;
+      border: 1px solid rgba(255, 0, 0, 0.2);
+    }
+
+    /* 🌟 Result Cards - Enhanced (keeping existing inline styles) */
+    .result-card {
+      max-width: 900px;
+      margin: 0 auto 30px auto;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.12));
+      padding: 40px;
+      border-radius: 20px;
+      backdrop-filter: blur(12px);
+      border-left: 6px solid #70e27c;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .result-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(112, 226, 124, 0.5), transparent);
+    }
+
+    /* Weather Card Specific */
+    .result-card:nth-child(2) {
+      border-left-color: #6dc1f8;
+    }
+
+    .result-card:nth-child(2)::before {
+      background: linear-gradient(90deg, transparent, rgba(109, 193, 248, 0.5), transparent);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .feature-grid,
+      .steps-grid {
+        flex-direction: column;
+      }
+      
+      .hero-section h1 {
+        font-size: 38px;
+      }
+      
+      .hero-section {
+        padding: 60px 20px 40px;
+      }
+      
+      .feature-section h2,
+      .content-section h2 {
+        font-size: 2rem;
+      }
+      
+      .pesticide-table-container {
+        padding: 20px 15px;
+        margin: 30px 15px;
+      }
+      
+      .pesticide-table-container h2 {
+        font-size: 24px;
+      }
+      
+      .pesticide-table {
+        display: block;
+        overflow-x: auto;
+      }
+      
+      .upload-container {
+        padding: 30px 20px;
+      }
+      
+      .step-card,
+      .feature-box {
+        padding: 25px 20px;
+      }
+      
+      .result-card {
+        padding: 30px 20px;
+        margin: 0 15px 25px;
+      }
+    }
+
+    /* Scrollbar Styling */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, #aefc5f, #c236c7);
+      border-radius: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(135deg, #9ff55a, #b130b5);
+    }
+
+    /* Loading Animation */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .feature-box,
+    .step-card,
+    .upload-container,
+    .result-card {
+      animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    /* Sequential Animation Delay */
+    .feature-box:nth-child(1) { animation-delay: 0.1s; }
+    .feature-box:nth-child(2) { animation-delay: 0.2s; }
+    .feature-box:nth-child(3) { animation-delay: 0.3s; }
+    .step-card:nth-child(1) { animation-delay: 0.1s; }
+    .step-card:nth-child(2) { animation-delay: 0.2s; }
+    .step-card:nth-child(3) { animation-delay: 0.3s; }
+  </style>
+</head>
+
+<body>
+
+  <video autoplay muted loop id="bg-video">
+    <source src="{{ url_for('static', filename='AI_Assisted_Farming_Success_Video.mp4') }}" type="video/mp4">
+  </video>
+
+  <!-- 🌿 Hero Section -->
+  <section class="hero-section">
+    <img src="{{ url_for('static', filename='logo.jpg') }}" alt="Sanjeevani AI Logo">
+    <h1>Sanjeevani AI</h1>
+    <p>Intelligent Crop Disease Detection & Pesticide Recommendation</p>
+    <p style="font-size: 18px; max-width: 700px; margin: 0 auto;">
+      Harness the power of AI to identify crop diseases early and recommend precise solutions.
+    </p>
+  </section>
+
+  <!-- 🌾 Feature Section -->
+  <section class="feature-section">
+    <h2>Our Core Capabilities</h2>
+    <div class="feature-grid">
+      <div class="feature-box">
+        🧠 <h3>AI-Powered Detection</h3>
+        <p>Deep learning models trained on thousands of crop images.</p>
+      </div>
+      <div class="feature-box">
+        🌤️ <h3>Weather Integration</h3>
+        <p>Real-time weather data for optimal spray timing.</p>
+      </div>
+      <div class="feature-box">
+        🌱 <h3>Smart Recommendations</h3>
+        <p>Personalized pesticide suggestions with safety precautions.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 🌿 Upload Section (ONLY ONCE) -->
+  <section class="content-section">
+    <h2 style="font-family:'Georgia',serif;color:#d4ffad;text-shadow:0 0 10px rgba(0,0,0,0.8);">
+      A heartfelt welcome to the jewel of farmers!
+    </h2>
+    <p style="font-size:18px;color:#e9e97b;margin-top:10px;">
+      Upload your crop image and get insights using AI + weather intelligence.
+    </p>
+
+    <div class="upload-container">
+      <form id="uploadForm" enctype="multipart/form-data" method="post" action="/analyze">
+        <div class="upload-box" onclick="document.getElementById('imageUpload').click()">
+          <input type="file" id="imageUpload" name="image" accept="image/*" required>
+          <label for="imageUpload">📸 Click or Drag & Drop to Upload Crop Image</label>
+        </div>
+        <button type="submit">Analyze Crop</button>
+      </form>
+    </div>
+
+    <div id="weather" style="margin-top:20px;">
+      <p>Waiting for location to fetch weather data...</p>
+    </div>
+  </section>
+
+  <!-- 🌿🌿 RESULT CARDS (ONLY ONCE) 🌿🌿 -->
+  {% if diagnosis_id %}
+  <section class="content-section" style="margin-top: 40px;">
+
+    <!-- 🌱 DISEASE DETECTED CARD -->
+    <div class="result-card" style="
+        max-width: 900px;
+        margin: 0 auto 25px auto;
+        background: rgba(255, 255, 255, 0.15);
+        padding: 30px;
+        border-radius: 15px;
+        backdrop-filter: blur(6px);
+        border-left: 6px solid #70e27c;
+        box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+    ">
+        <h2 style="color:#1d7f39; font-size:28px; font-weight:700;">
+            🌱 Disease Detected
+        </h2>
+
+        <h1 style="color:#0e8c38; margin-top:10px; font-size:32px; font-weight:800;">
+            {{ disease_name }}
+        </h1>
+
+        <span style="
+            display:inline-block;
+            margin-top:12px;
+            background:#ffb347;
+            padding:8px 18px;
+            font-size:16px;
+            color:#000;
+            font-weight:600;
+            border-radius:20px;
+        ">
+            {{ disease_confidence }}% Confidence
+        </span>
+    </div>
+
+    <!-- 🌦 WEATHER CONDITIONS CARD -->
+    <div class="result-card" style="
+        max-width: 900px;
+        margin: 0 auto 25px auto;
+        background: rgba(255, 255, 255, 0.15);
+        padding: 30px;
+        border-radius: 15px;
+        backdrop-filter: blur(6px);
+        border-left: 6px solid #6dc1f8;
+        box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+    ">
+        <h2 style="color:#0b5c8e; font-size:28px; font-weight:700; margin-bottom:20px;">
+            🌤 Weather Conditions (5-day predictions)
+        </h2>
+
+        <div style="
+            display:flex;
+            justify-content:space-between;
+            text-align:center;
+            color:#0c4a6e;
+            font-weight:700;
+            font-size:22px;
+        ">
+            <div>
+                {{ temperature }}°C
+                <div style="font-size:14px; color:#1e293b;">Temperature</div>
+            </div>
+            <div>
+                {{ humidity }}%
+                <div style="font-size:14px; color:#1e293b;">Humidity</div>
+            </div>
+            <div>
+                {{ rainfall }}
+                <div style="font-size:14px; color:#1e293b;">Rainfall</div>
+            </div>
+            <div>
+                {{ wind_speed }} km/h
+                <div style="font-size:14px; color:#1e293b;">Wind Speed</div>
+            </div>
+        </div>
+
+        <!-- NEW: Good days list (only days where model predicted GOOD) -->
+        <div class="good-days-list">
+            {% if good_days and good_days|length > 0 %}
+                <h3 style="color:#bff7bf;">✔ Suitable Days for Spraying</h3>
+
+                {% for d in good_days %}
+                    <div class="good-day">
+                        <div><strong>Day {{ d.day_index + 1 }}</strong> — predicted GOOD</div>
+                        <div class="meta">
+                            {% if d.features %}
+                                {% set f = d.features %}
+                                Temp: {{ f.temperature if f.temperature is defined else 'N/A' }}°C,
+                                Humidity: {{ f.humidity if f.humidity is defined else 'N/A' }}%,
+                                Rain: {{ f.rainfall if f.rainfall is defined else 'N/A' }},
+                                Wind: {{ f.wind_speed if f.wind_speed is defined else 'N/A' }}
+                            {% else %}
+                                Weather features not available.
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p style="color:#ffd6d6;">No GOOD days found in the 5-day prediction.</p>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <!-- 🧪 PESTICIDE RECOMMENDATIONS TABLE -->
+    {% if pesticide_recommendations and pesticide_recommendations|length > 0 %}
+    <div class="pesticide-table-container">
+        <h2>🧪 Complete Pesticide Recommendations for {{ disease_name }}</h2>
+        
+        <table class="pesticide-table">
+            <thead>
+                <tr>
+                    <!-- Dynamically generate table headers based on the first row's keys -->
+                    {% for column_name in pesticide_recommendations[0].keys() %}
+                    <th>{{ column_name.replace('_', ' ').title() }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dynamically generate table rows with all data -->
+                {% for rec in pesticide_recommendations %}
+                <tr>
+                    {% for column_name in pesticide_recommendations[0].keys() %}
+                    <td>
+                        {% if rec[column_name] is not none %}
+                            {{ rec[column_name] }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% elif disease_name and disease_name != "Inference Error" and disease_name != "Pending" %}
+    <div class="pesticide-table-container">
+        <h2>🧪 Pesticide Recommendations</h2>
+        <div class="no-recommendations">
+            <p>No specific pesticide recommendations found for <strong>{{ disease_name }}</strong>.</p>
+            <p>Please consult with agricultural experts for treatment options.</p>
+        </div>
+    </div>
+    {% endif %}
+
+  </section>
+  {% endif %}
+  <!-- 🌿🌿 END RESULT CARDS 🌿🌿 -->
+
+  <!-- 🚜 How It Works -->
+  <section class="how-it-works-section">
+    <h2>How It Works</h2>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <h4>Upload Image</h4>
+        <p>Take a clear photo of the affected crop leaf and upload it to our system.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <h4>AI Analysis</h4>
+        <p>Our CNN model identifies the disease and integrates it with live weather data.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <h4>Get Results</h4>
+        <p>Receive disease diagnosis, optimal spray time, and pesticide recommendations instantly.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 🌱 Footer -->
+  <footer>
+    <p>Powered by Deep Learning & Weather Intelligence</p>
+    <p>© 2025 Sanjeevani AI - Empowering Farmers with Technology</p>
+  </footer>
+
+  <!-- ☁️ JS: Weather Integration -->
+  <script>
+    navigator.geolocation.getCurrentPosition((pos) => {
+      const lat = pos.coords.latitude;
+      const lon = pos.coords.longitude;
+      fetch(`/get_weather?lat=${lat}&lon=${lon}`)
+        .then(res => res.json())
+        .then(() => {
+          document.getElementById('weather').innerHTML =
+            "<h3>🌤️ Weather Data Processed</h3><p>Your location's weather information has been successfully stored.</p>";
+        })
+        .catch(() => {
+          document.getElementById('weather').innerHTML = "<p style='color:red;'>Unable to fetch weather data.</p>";
+        });
+    }, () => {
+      document.getElementById('weather').innerHTML = "<p style='color:red;'>Location permission denied!</p>";
+    });
+  </script>
+</body>
+</html>

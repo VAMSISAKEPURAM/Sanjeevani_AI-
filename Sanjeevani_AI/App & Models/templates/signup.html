@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sanjeevani AI - Signup</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="signup-page">
+
+    <!-- 🎥 Background Video -->
+    <video autoplay muted loop id="bg-video">
+        <source src="{{ url_for('static', filename='AI_Assisted_Farming_Success_Video.mp4') }}" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+    <div class="overlay"></div>
+
+    <div class="signup-container">
+        <h1>Create Your Account</h1>
+        <form action="/signup" method="POST">
+            <input type="text" name="username" placeholder="Choose Username" required><br>
+            <input type="password" name="password" placeholder="Choose Password" required><br>
+            <button type="submit">Sign Up</button>
+        </form>
+        {% if error %}<p class="error">{{ error }}</p>{% endif %}
+        <p>Already have an account? <a href="/">Login</a></p>
+    </div>
+
+</body>
+</html>
